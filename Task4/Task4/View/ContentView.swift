@@ -9,23 +9,34 @@ import SwiftUI
 
 struct RestaurantListView: View {
     
-    var restaurantNames = ["Cafe Deadend", "Homei", "Teakha", "Cafe Loisl", "Petite Oyster", "For Kee Restaurant", "Po's Atelier", "Bourke Street Bakery", "Haigh's Chocolate", "Palomino Espresso", "Upstate", "Traif", "Graham Avenue Meats And Deli", "Waffle & Wolf", "Five Leaves", "Cafe Lore", "Confessional", "Barrafina", "Donostia", "Royal Oak", "CASK Pub and Kitchen"]
-    
-    var restaurantLocations = ["Hong Kong", "Hong Kong", "Hong Kong", "Hong Kong", "Hong Kong", "Hong Kong", "Hong Kong", "Sydney", "Sydney", "Sydney", "New York", "New York", "New York", "New York", "New York", "New York", "New York", "London", "London", "London", "London"]
-    
-    var restaurantTypes = ["Coffee & Tea Shop", "Cafe", "Tea House", "Austrian / Causual Drink", "French", "Bakery", "Bakery", "Chocolate", "Cafe", "American / Seafood", "American", "American", "Breakfast & Brunch", "Coffee & Tea", "Coffee & Tea", "Latin American", "Spanish", "Spanish", "Spanish", "British", "Thai"]
-    
-    @State var favs = Array(repeating: false, count: 21)
+    @State var restaurants = [
+        Restaurant(name: "Cafe Deadend", type: "Coffee & Tea Shop", location: "Hong Kong", isFav: false),
+        Restaurant(name: "Homei", type: "Cafe", location: "Hong Kong", isFav: false),
+        Restaurant(name: "Teakha", type: "Tea House", location: "Hong Kong", isFav: false),
+        Restaurant(name: "Cafe loisl", type: "Austrian / Causual Drink", location: "Hong Kong", isFav: false),
+        Restaurant(name: "Petite Oyster", type: "French", location: "Hong Kong", isFav: false),
+        Restaurant(name: "For Kee Restaurant", type: "Bakery", location: "Hong Kong", isFav: false),
+        Restaurant(name: "Po's Atelier", type: "Bakery", location: "Hong Kong", isFav: false),
+        Restaurant(name: "Bourke Street Backery", type: "Chocolate", location: "Sydney", isFav: false),
+        Restaurant(name: "Haigh's Chocolate", type: "Cafe", location: "Sydney", isFav: false),
+        Restaurant(name: "Palomino Espresso", type: "American / Seafood", location: "Sydney", isFav: false),
+        Restaurant(name: "Upstate", type: "American", location: "New York", isFav: false),
+        Restaurant(name: "Traif", type: "American", location: "New York", isFav: false),
+        Restaurant(name: "Graham Avenue Meats", type: "Breakfast & Brunch", location: "New York", isFav: false),
+        Restaurant(name: "Waffle & Wolf", type: "Coffee & Tea", location: "NewYork", isFav: false),
+        Restaurant(name: "Five Leaves", type: "Coffee & Tea", location: "New York", isFav: false),
+        Restaurant(name: "Cafe Lore", type: "Latin American", location: "New York", isFav: false),
+        Restaurant(name: "Confessional", type: "Spanish", location: "New York", isFav: false),
+        Restaurant(name: "Barrafina", type: "Spanish", location: "London", isFav: false),
+        Restaurant(name: "Donostia", type: "Spanish", location: "London", isFav: false),
+        Restaurant(name: "Royal Oak", type: "British", location: "London", isFav: false),
+        Restaurant(name: "CASK Pub and Kitchen", type: "Thai", location: "London", isFav: false)
+    ]
     
     var body: some View {
         List {
-            ForEach(restaurantNames.indices, id: \.self) { index in
-                FullImageRow(
-                    imageName: restaurantNames[index],
-                    name: restaurantNames[index],
-                    type: restaurantTypes[index],
-                    location: restaurantLocations[index],
-                    isFav: $favs[index])
+            ForEach(restaurants.indices, id: \.self) { index in
+                FullImageRow(restaurant: $restaurants[index])
             }.listRowSeparator(.hidden)
         }.listStyle(.plain)
     }
@@ -34,40 +45,33 @@ struct RestaurantListView: View {
 struct RestaurantListView_Previews: PreviewProvider {
     static var previews: some View {
         RestaurantListView()
-        
-        FullImageRow(imageName: "Cafe Deadend", name: "Cafe Deadend", type: "Cafe", location: "Hong Kong", isFav: .constant(true))
-            .previewLayout(.sizeThatFits)
     }
 }
 
 struct BasicTextImageRow: View {
-    var imageName: String
-    var name: String
-    var type: String
-    var location: String
     
     @State private var showOptions = false
     @State private var showError = false
-    @Binding var isFav: Bool
+    @Binding var restaurant: Restaurant
     
     var body: some View {
         HStack(alignment: .top, spacing: 20) {
-            Image(imageName)
+            Image(restaurant.image)
                 .resizable()
                 .frame(width: 120, height: 118)
                 .cornerRadius(20)
             
             VStack(alignment: .leading) {
-                Text(name)
+                Text(restaurant.name)
                     .font(.system(.title2, design: .rounded))
-                Text(type)
+                Text(restaurant.type)
                     .font(.system(.body, design: .rounded))
-                Text(location)
+                Text(restaurant.location)
                     .font(.system(.subheadline, design: .rounded))
                     .foregroundColor(.gray)
             }
             
-            if isFav {
+            if restaurant.isFav {
                 Spacer()
                 
                 Image(systemName: "heart.fill")
@@ -85,8 +89,8 @@ struct BasicTextImageRow: View {
             Button("Reserve a table") {
                 self.showError.toggle()
             }
-            Button(isFav ? "Remove from favorites" : "Mark as favorite") {
-                self.isFav.toggle()
+            Button(restaurant.isFav ? "Remove from favorites" : "Mark as favorite") {
+                self.restaurant.isFav.toggle()
             }
             Button("Cancel", role: .cancel) {}
             
@@ -103,18 +107,14 @@ struct BasicTextImageRow: View {
 }
 
 struct FullImageRow: View {
-    var imageName: String
-    var name: String
-    var type: String
-    var location: String
     
     @State private var showOptions = false
     @State private var showError = false
-    @Binding var isFav: Bool
+    @Binding var restaurant: Restaurant
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Image(imageName)
+            Image(restaurant.image)
                 .resizable()
                 .scaledToFill()
                 .frame(height: 200)
@@ -122,13 +122,13 @@ struct FullImageRow: View {
             
             HStack(alignment: .top, spacing: 20) {
                 VStack(alignment: .leading) {
-                    Text(name)
+                    Text(restaurant.name)
                         .font(.system(.title2, design: .rounded))
                     
-                    Text(type)
+                    Text(restaurant.type)
                         .font(.system(.body, design: .rounded))
                     
-                    Text(location)
+                    Text(restaurant.location)
                         .font(.system(.subheadline, design: .rounded))
                         .foregroundColor(.gray)
                 }
@@ -138,7 +138,7 @@ struct FullImageRow: View {
                 Spacer()
                 VStack() {
                     
-                    if isFav {
+                    if restaurant.isFav {
                         Image(systemName: "heart.fill")
                             .foregroundColor(.yellow)
                     }
@@ -157,8 +157,8 @@ struct FullImageRow: View {
             Button("Reserve a table") {
                 self.showError.toggle()
             }
-            Button(isFav ? "Remove from favorites" : "Mark as favorite") {
-                self.isFav.toggle()
+            Button(restaurant.isFav ? "Remove from favorites" : "Mark as favorite") {
+                self.restaurant.isFav.toggle()
             }
             Button("Cancel", role: .cancel) {}
             
