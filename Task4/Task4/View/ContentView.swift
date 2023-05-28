@@ -36,16 +36,16 @@ struct RestaurantListView: View {
     var body: some View {
         List {
             ForEach(restaurants.indices, id: \.self) { index in
-                FullImageRow(restaurant: $restaurants[index])
+                BasicTextImageRow(restaurant: $restaurants[index])
                     .swipeActions(edge: .leading, allowsFullSwipe: false, content: {
                         Button {
-
+                            
                         } label: {
                             Image(systemName: "heart")
                         } .tint(.green)
-
+                        
                         Button {
-
+                            
                         } label: {
                             Image(systemName: "square.and.arrow.up")
                         } .tint(.orange)
@@ -90,23 +90,52 @@ struct BasicTextImageRow: View {
                     .foregroundColor(.yellow)
             }
         }
+        .contextMenu{ // visble as dropdown menu after long press on list element
+            Button(action: {
+                self.showError.toggle()
+            }) {
+                HStack {
+                    Text("Reserve a table")
+                    Image(systemName: "phone")
+                }
+            }
+            
+            Button(action: {
+                self.restaurant.isFav.toggle()
+            }) {
+                HStack {
+                    Text(restaurant.isFav ? "Remove from favorites" : "Mark as favorite")
+                    Image(systemName: "heart")
+                    
+                }
+            }
+            
+            Button(action: {
+                self.showOptions.toggle()
+            }) {
+                HStack {
+                    Text("Share")
+                    Image(systemName: "square.and.arrow.up")
+                }
+            }
+        }
         .onTapGesture {
             showOptions.toggle()
         }
-        .confirmationDialog(
-            "What do you want to do?",
-            isPresented: $showOptions,
-            titleVisibility: .visible
-        ) {
-            Button("Reserve a table") {
-                self.showError.toggle()
-            }
-            Button(restaurant.isFav ? "Remove from favorites" : "Mark as favorite") {
-                self.restaurant.isFav.toggle()
-            }
-            Button("Cancel", role: .cancel) {}
-            
-        }
+//        .confirmationDialog( // cannot be used together with sheet
+//            "What do you want to do?",
+//            isPresented: $showOptions,
+//            titleVisibility: .visible
+//        ) {
+//            Button("Reserve a table") {
+//                self.showError.toggle()
+//            }
+//            Button(restaurant.isFav ? "Remove from favorites" : "Mark as favorite") {
+//                self.restaurant.isFav.toggle()
+//            }
+//            Button("Cancel", role: .cancel) {}
+//
+//        }
         .alert(isPresented: $showError) {
             Alert(
                 title: Text("Not yet available"),
@@ -114,6 +143,14 @@ struct BasicTextImageRow: View {
                 primaryButton: .default(Text("OK")),
                 secondaryButton: .cancel()
             )
+        }
+        .sheet(isPresented: $showOptions) { // allows to show the "share" menu
+            let defaultText = "Just checking in at \(restaurant.name)"
+            if let imageToShare = UIImage(named: restaurant.image) {
+                ActivityView(activityItems: [defaultText, imageToShare])
+            } else {
+                ActivityView(activityItems: [defaultText])
+            }
         }
     }
 }
