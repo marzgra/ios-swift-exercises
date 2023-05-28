@@ -13,16 +13,16 @@ struct RestaurantListView: View {
         Restaurant(name: "Cafe Deadend", type: "Coffee & Tea Shop", location: "Hong Kong", isFav: false),
         Restaurant(name: "Homei", type: "Cafe", location: "Hong Kong", isFav: false),
         Restaurant(name: "Teakha", type: "Tea House", location: "Hong Kong", isFav: false),
-        Restaurant(name: "Cafe loisl", type: "Austrian / Causual Drink", location: "Hong Kong", isFav: false),
+        Restaurant(name: "Cafe Loisl", type: "Austrian / Causual Drink", location: "Hong Kong", isFav: false),
         Restaurant(name: "Petite Oyster", type: "French", location: "Hong Kong", isFav: false),
         Restaurant(name: "For Kee Restaurant", type: "Bakery", location: "Hong Kong", isFav: false),
         Restaurant(name: "Po's Atelier", type: "Bakery", location: "Hong Kong", isFav: false),
-        Restaurant(name: "Bourke Street Backery", type: "Chocolate", location: "Sydney", isFav: false),
+        Restaurant(name: "Bourke Street Bakery", type: "Chocolate", location: "Sydney", isFav: false),
         Restaurant(name: "Haigh's Chocolate", type: "Cafe", location: "Sydney", isFav: false),
         Restaurant(name: "Palomino Espresso", type: "American / Seafood", location: "Sydney", isFav: false),
         Restaurant(name: "Upstate", type: "American", location: "New York", isFav: false),
         Restaurant(name: "Traif", type: "American", location: "New York", isFav: false),
-        Restaurant(name: "Graham Avenue Meats", type: "Breakfast & Brunch", location: "New York", isFav: false),
+        Restaurant(name: "Graham Avenue Meats And Deli", type: "Breakfast & Brunch", location: "New York", isFav: false),
         Restaurant(name: "Waffle & Wolf", type: "Coffee & Tea", location: "NewYork", isFav: false),
         Restaurant(name: "Five Leaves", type: "Coffee & Tea", location: "New York", isFav: false),
         Restaurant(name: "Cafe Lore", type: "Latin American", location: "New York", isFav: false),
@@ -37,14 +37,26 @@ struct RestaurantListView: View {
         List {
             ForEach(restaurants.indices, id: \.self) { index in
                 FullImageRow(restaurant: $restaurants[index])
-            }.listRowSeparator(.hidden)
-        }.listStyle(.plain)
-    }
-}
+                    .swipeActions(edge: .leading, allowsFullSwipe: false, content: {
+                        Button {
 
-struct RestaurantListView_Previews: PreviewProvider {
-    static var previews: some View {
-        RestaurantListView()
+                        } label: {
+                            Image(systemName: "heart")
+                        } .tint(.green)
+
+                        Button {
+
+                        } label: {
+                            Image(systemName: "square.and.arrow.up")
+                        } .tint(.orange)
+                    })
+            }
+            .onDelete(perform: { indexSet in
+                restaurants.remove(atOffsets: indexSet)
+            })
+            .listRowSeparator(.hidden)
+        }
+        .listStyle(.plain)
     }
 }
 
@@ -146,6 +158,26 @@ struct FullImageRow: View {
                 .padding(.trailing)
             }
         }
+        .contextMenu{ // visble as dropdown menu after long press on list element
+            Button(action: {
+                self.showError.toggle()
+            }) {
+                HStack {
+                    Text("Reserve a table")
+                    Image(systemName: "phone")
+                }
+            }
+            
+            Button(action: {
+                self.restaurant.isFav.toggle()
+            }) {
+                HStack {
+                    Text(restaurant.isFav ? "Remove from favorites" : "Mark as favorite")
+                    Image(systemName: "heart")
+                    
+                }
+            }
+        }
         .onTapGesture {
             showOptions.toggle()
         }
@@ -171,6 +203,14 @@ struct FullImageRow: View {
                 secondaryButton: .cancel()
             )
         }
+    }
+}
+
+
+
+struct RestaurantListView_Previews: PreviewProvider {
+    static var previews: some View {
+        RestaurantListView()
     }
 }
 
