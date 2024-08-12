@@ -86,11 +86,13 @@ class FlashcardScannerViewController: UIViewController {
     }
     
     func handleScanComplete() {
-        let alert = UIAlertController(title: "Flip Flashcard", message: "Flip the flashcard and tap OK to scan the back side.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak self] _ in
-            self?.scanningBackSide = true
-        }))
-        present(alert, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Flip Flashcard", message: "Flip the flashcard and tap OK to scan the back side.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak self] _ in
+                self?.scanningBackSide = true
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 }
 
@@ -115,25 +117,19 @@ extension FlashcardScannerViewController {
                 guard let topCandidate = observation.topCandidates(1).first else { continue }
                 let recognizedText = topCandidate.string
                 
-                if self.scanningBackSide {
-                    self.flashcard.language2 = recognizedText
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    if self.scanningBackSide {
+                        self.flashcard.language2 = recognizedText
                         self.mainTextLabel.text = "Translation: \(recognizedText)"
-                    }
-                } else {
-                    if recognizedText.isNumeric {
-                        self.flashcard.cardNumber = recognizedText
-                        DispatchQueue.main.async {
-                            self.cardNumberLabel.text = "Number: \(recognizedText)"
-                        }
-                    } else if recognizedText.isUppercase {
-                        self.flashcard.language1 = recognizedText
-                        DispatchQueue.main.async {
-                            self.language1Label.text = "Language 1: \(recognizedText)"
-                        }
                     } else {
-                        self.flashcard.mainText = recognizedText
-                        DispatchQueue.main.async {
+                        if recognizedText.isNumeric {
+                            self.flashcard.cardNumber = recognizedText
+                            self.cardNumberLabel.text = "Number: \(recognizedText)"
+                        } else if recognizedText.isUppercase {
+                            self.flashcard.language1 = recognizedText
+                            self.language1Label.text = "Language 1: \(recognizedText)"
+                        } else {
+                            self.flashcard.mainText = recognizedText
                             self.mainTextLabel.text = "Main Text: \(recognizedText)"
                         }
                     }
