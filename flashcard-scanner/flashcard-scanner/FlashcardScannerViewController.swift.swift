@@ -94,6 +94,17 @@ class FlashcardScannerViewController: UIViewController {
     }
 }
 
+// String extensions for custom functionality
+extension String {
+    var isNumeric: Bool {
+        return !isEmpty && allSatisfy { $0.isNumber }
+    }
+    
+    var isUppercase: Bool {
+        return self == self.uppercased() && rangeOfCharacter(from: .letters) != nil
+    }
+}
+
 // Vision framework for text recognition
 extension FlashcardScannerViewController {
     func detectText(in image: CVPixelBuffer) {
