@@ -7,30 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		375506FC2A1B2382009D10D3 /* Task4App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375506FB2A1B2382009D10D3 /* Task4App.swift */; };
-		375506FE2A1B2382009D10D3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375506FD2A1B2382009D10D3 /* ContentView.swift */; };
-		375507002A1B2384009D10D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 375506FF2A1B2384009D10D3 /* Assets.xcassets */; };
-		375507032A1B2384009D10D3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 375507022A1B2384009D10D3 /* Preview Assets.xcassets */; };
-		3755070A2A1D6043009D10D3 /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375507092A1D6043009D10D3 /* Restaurant.swift */; };
-		3755070E2A23C9C6009D10D3 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3755070D2A23C9C6009D10D3 /* ActivityView.swift */; };
-		376A50982A2CE9DB00211066 /* RestaurantDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376A50972A2CE9DB00211066 /* RestaurantDetailView.swift */; };
-		37E01B792A884D6800641A6B /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E01B782A884D6800641A6B /* MapView.swift */; };
+		3746A4532C6A310100885133 /* FlashcardScannerViewController.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3746A4522C6A310100885133 /* FlashcardScannerViewController.swift.swift */; };
+		37C0AD222C6925F900C3173A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37C0AD212C6925F900C3173A /* Assets.xcassets */; };
+		37C0AD252C6925F900C3173A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37C0AD242C6925F900C3173A /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		375506F82A1B2382009D10D3 /* Task4.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Task4.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		375506FB2A1B2382009D10D3 /* Task4App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task4App.swift; sourceTree = "<group>"; };
-		375506FD2A1B2382009D10D3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		375506FF2A1B2384009D10D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		375507022A1B2384009D10D3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		375507092A1D6043009D10D3 /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
-		3755070D2A23C9C6009D10D3 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
-		376A50972A2CE9DB00211066 /* RestaurantDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantDetailView.swift; sourceTree = "<group>"; };
-		37E01B782A884D6800641A6B /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		3746A4512C69385500885133 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		3746A4522C6A310100885133 /* FlashcardScannerViewController.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardScannerViewController.swift.swift; sourceTree = "<group>"; };
+		37C0AD1A2C6925F600C3173A /* flashcard-scanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "flashcard-scanner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		37C0AD212C6925F900C3173A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		37C0AD242C6925F900C3173A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		375506F52A1B2382009D10D3 /* Frameworks */ = {
+		37C0AD172C6925F600C3173A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -40,97 +31,78 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		375506EF2A1B2382009D10D3 = {
+		37C0AD112C6925F600C3173A = {
 			isa = PBXGroup;
 			children = (
-				375506FA2A1B2382009D10D3 /* Task4 */,
-				375506F92A1B2382009D10D3 /* Products */,
+				37C0AD1C2C6925F600C3173A /* flashcard-scanner */,
+				37C0AD1B2C6925F600C3173A /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		375506F92A1B2382009D10D3 /* Products */ = {
+		37C0AD1B2C6925F600C3173A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				375506F82A1B2382009D10D3 /* Task4.app */,
+				37C0AD1A2C6925F600C3173A /* flashcard-scanner.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		375506FA2A1B2382009D10D3 /* Task4 */ = {
+		37C0AD1C2C6925F600C3173A /* flashcard-scanner */ = {
 			isa = PBXGroup;
 			children = (
-				3755070B2A1D63F6009D10D3 /* Model */,
-				3755070C2A1D646B009D10D3 /* View */,
-				375506FB2A1B2382009D10D3 /* Task4App.swift */,
-				375506FF2A1B2384009D10D3 /* Assets.xcassets */,
-				375507012A1B2384009D10D3 /* Preview Content */,
+				3746A4512C69385500885133 /* Info.plist */,
+				3746A4522C6A310100885133 /* FlashcardScannerViewController.swift.swift */,
+				37C0AD212C6925F900C3173A /* Assets.xcassets */,
+				37C0AD232C6925F900C3173A /* Preview Content */,
 			);
-			path = Task4;
+			path = "flashcard-scanner";
 			sourceTree = "<group>";
 		};
-		375507012A1B2384009D10D3 /* Preview Content */ = {
+		37C0AD232C6925F900C3173A /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
-				375507022A1B2384009D10D3 /* Preview Assets.xcassets */,
+				37C0AD242C6925F900C3173A /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		3755070B2A1D63F6009D10D3 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				375507092A1D6043009D10D3 /* Restaurant.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		3755070C2A1D646B009D10D3 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				375506FD2A1B2382009D10D3 /* ContentView.swift */,
-				3755070D2A23C9C6009D10D3 /* ActivityView.swift */,
-				376A50972A2CE9DB00211066 /* RestaurantDetailView.swift */,
-				37E01B782A884D6800641A6B /* MapView.swift */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		375506F72A1B2382009D10D3 /* Task4 */ = {
+		37C0AD192C6925F600C3173A /* flashcard-scanner */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 375507062A1B2384009D10D3 /* Build configuration list for PBXNativeTarget "Task4" */;
+			buildConfigurationList = 37C0AD282C6925F900C3173A /* Build configuration list for PBXNativeTarget "flashcard-scanner" */;
 			buildPhases = (
-				375506F42A1B2382009D10D3 /* Sources */,
-				375506F52A1B2382009D10D3 /* Frameworks */,
-				375506F62A1B2382009D10D3 /* Resources */,
+				37C0AD162C6925F600C3173A /* Sources */,
+				37C0AD172C6925F600C3173A /* Frameworks */,
+				37C0AD182C6925F600C3173A /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = Task4;
-			productName = Task4;
-			productReference = 375506F82A1B2382009D10D3 /* Task4.app */;
+			name = "flashcard-scanner";
+			productName = "flashcard-scanner";
+			productReference = 37C0AD1A2C6925F600C3173A /* flashcard-scanner.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		375506F02A1B2382009D10D3 /* Project object */ = {
+		37C0AD122C6925F600C3173A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
 				TargetAttributes = {
-					375506F72A1B2382009D10D3 = {
-						CreatedOnToolsVersion = 14.3;
+					37C0AD192C6925F600C3173A = {
+						CreatedOnToolsVersion = 15.4;
+						LastSwiftMigration = 1540;
 					};
 				};
 			};
-			buildConfigurationList = 375506F32A1B2382009D10D3 /* Build configuration list for PBXProject "Task4" */;
+			buildConfigurationList = 37C0AD152C6925F600C3173A /* Build configuration list for PBXProject "flashcard-scanner" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -138,49 +110,45 @@
 				en,
 				Base,
 			);
-			mainGroup = 375506EF2A1B2382009D10D3;
-			productRefGroup = 375506F92A1B2382009D10D3 /* Products */;
+			mainGroup = 37C0AD112C6925F600C3173A;
+			productRefGroup = 37C0AD1B2C6925F600C3173A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				375506F72A1B2382009D10D3 /* Task4 */,
+				37C0AD192C6925F600C3173A /* flashcard-scanner */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		375506F62A1B2382009D10D3 /* Resources */ = {
+		37C0AD182C6925F600C3173A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				375507032A1B2384009D10D3 /* Preview Assets.xcassets in Resources */,
-				375507002A1B2384009D10D3 /* Assets.xcassets in Resources */,
+				37C0AD252C6925F900C3173A /* Preview Assets.xcassets in Resources */,
+				37C0AD222C6925F900C3173A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		375506F42A1B2382009D10D3 /* Sources */ = {
+		37C0AD162C6925F600C3173A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				375506FE2A1B2382009D10D3 /* ContentView.swift in Sources */,
-				37E01B792A884D6800641A6B /* MapView.swift in Sources */,
-				376A50982A2CE9DB00211066 /* RestaurantDetailView.swift in Sources */,
-				3755070E2A23C9C6009D10D3 /* ActivityView.swift in Sources */,
-				375506FC2A1B2382009D10D3 /* Task4App.swift in Sources */,
-				3755070A2A1D6043009D10D3 /* Restaurant.swift in Sources */,
+				3746A4532C6A310100885133 /* FlashcardScannerViewController.swift.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		375507042A1B2384009D10D3 /* Debug */ = {
+		37C0AD262C6925F900C3173A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -213,7 +181,8 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -227,20 +196,22 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
-		375507052A1B2384009D10D3 /* Release */ = {
+		37C0AD272C6925F900C3173A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -273,7 +244,8 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -281,94 +253,113 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		375507072A1B2384009D10D3 /* Debug */ = {
+		37C0AD292C6925F900C3173A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Task4/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"flashcard-scanner/Preview Content\"";
+				DEVELOPMENT_TEAM = 93KKY5279K;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "flashcard-scanner/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.gmarzec.Task4;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gmarzec.flashcard-scanner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
-		375507082A1B2384009D10D3 /* Release */ = {
+		37C0AD2A2C6925F900C3173A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Task4/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"flashcard-scanner/Preview Content\"";
+				DEVELOPMENT_TEAM = 93KKY5279K;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "flashcard-scanner/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.gmarzec.Task4;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gmarzec.flashcard-scanner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		375506F32A1B2382009D10D3 /* Build configuration list for PBXProject "Task4" */ = {
+		37C0AD152C6925F600C3173A /* Build configuration list for PBXProject "flashcard-scanner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				375507042A1B2384009D10D3 /* Debug */,
-				375507052A1B2384009D10D3 /* Release */,
+				37C0AD262C6925F900C3173A /* Debug */,
+				37C0AD272C6925F900C3173A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		375507062A1B2384009D10D3 /* Build configuration list for PBXNativeTarget "Task4" */ = {
+		37C0AD282C6925F900C3173A /* Build configuration list for PBXNativeTarget "flashcard-scanner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				375507072A1B2384009D10D3 /* Debug */,
-				375507082A1B2384009D10D3 /* Release */,
+				37C0AD292C6925F900C3173A /* Debug */,
+				37C0AD2A2C6925F900C3173A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 375506F02A1B2382009D10D3 /* Project object */;
+	rootObject = 37C0AD122C6925F600C3173A /* Project object */;
 }
