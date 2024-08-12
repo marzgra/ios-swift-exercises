@@ -30,6 +30,9 @@ class CameraViewController: UIViewController {
 
         do {
             videoInput = try AVCaptureDeviceInput(device: videoCaptureDevice)
+            try videoCaptureDevice.lockForConfiguration()
+            videoCaptureDevice.focusMode = .continuousAutoFocus
+            videoCaptureDevice.unlockForConfiguration()
         } catch {
             return
         }
@@ -58,6 +61,7 @@ class CameraViewController: UIViewController {
         view.addSubview(captureButton)
     }
 
+
     @objc func capturePhoto() {
         let settings = AVCapturePhotoSettings()
         photoOutput.capturePhoto(with: settings, delegate: self)
@@ -73,12 +77,22 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         processImage(uiImage)
     }
 
+    func promptToFlipCard() {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Flip the Flashcard", message: "Please flip the flashcard and capture the other side.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak self] _ in
+                self?.captureSession.startRunning()
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+
     func processImage(_ image: UIImage) {
         guard let cgImage = image.cgImage else { return }
         let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
         let request = VNRecognizeTextRequest { [weak self] request, error in
             guard let observations = request.results as? [VNRecognizedTextObservation] else { return }
-            
+
             var recognizedStrings: [String] = []
             for observation in observations {
                 guard let topCandidate = observation.topCandidates(1).first else { continue }
@@ -86,7 +100,9 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
             }
 
             DispatchQueue.main.async {
-                // Navigate to the next view with recognized text
+                // After processing, prompt to flip the card
+                self?.promptToFlipCard()
+
                 let formVC = FlashcardFormViewController()
                 formVC.scannedText = recognizedStrings
                 formVC.capturedImage = image
@@ -96,4 +112,5 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
 
         try? requestHandler.perform([request])
     }
+
 }
