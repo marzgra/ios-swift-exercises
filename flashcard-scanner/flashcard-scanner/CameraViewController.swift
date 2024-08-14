@@ -17,7 +17,10 @@ class CameraViewController: UIViewController {
     var captureSession: AVCaptureSession!
     var photoOutput = AVCapturePhotoOutput()
     var previewLayer: AVCaptureVideoPreviewLayer!
-
+    
+    var isCapturingFrontSide = true // Track if capturing front side or back side
+    var frontSideRecognizedStrings: [String] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCamera()
@@ -25,7 +28,7 @@ class CameraViewController: UIViewController {
 
     func setupCamera() {
         captureSession = AVCaptureSession()
-        guard let videoCaptureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else { return }
+        guard let videoCaptureDevice = AVCaptureDevice.default(.builtInUltraWideCamera, for: .video, position: .back) else { return }
         let videoInput: AVCaptureDeviceInput
 
         do {
@@ -36,6 +39,10 @@ class CameraViewController: UIViewController {
         } catch {
             return
         }
+        
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(focusTapped))
+        view.addGestureRecognizer(tapGesture)
 
         if (captureSession.canAddInput(videoInput)) {
             captureSession.addInput(videoInput)
@@ -66,6 +73,29 @@ class CameraViewController: UIViewController {
         let settings = AVCapturePhotoSettings()
         photoOutput.capturePhoto(with: settings, delegate: self)
     }
+    
+    @objc func focusTapped(gesture: UITapGestureRecognizer) {
+        let location = gesture.location(in: view)
+        let focusPoint = previewLayer.captureDevicePointConverted(fromLayerPoint: location)
+
+        guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else { return }
+
+        do {
+            try device.lockForConfiguration()
+            if device.isFocusPointOfInterestSupported {
+                device.focusPointOfInterest = focusPoint
+                device.focusMode = .autoFocus
+            }
+            if device.isExposurePointOfInterestSupported {
+                device.exposurePointOfInterest = focusPoint
+                device.exposureMode = .autoExpose
+            }
+            device.unlockForConfiguration()
+        } catch {
+            print("Failed to focus")
+        }
+    }
+    
 }
 
 extension CameraViewController: AVCapturePhotoCaptureDelegate {
@@ -81,7 +111,7 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         DispatchQueue.main.async {
             let alert = UIAlertController(title: "Flip the Flashcard", message: "Please flip the flashcard and capture the other side.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak self] _ in
-                self?.captureSession.startRunning()
+                self?.isCapturingFrontSide = false
             }))
             self.present(alert, animated: true, completion: nil)
         }
@@ -100,17 +130,18 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
             }
 
             DispatchQueue.main.async {
-                // After processing, prompt to flip the card
-                self?.promptToFlipCard()
-
-                let formVC = FlashcardFormViewController()
-                formVC.scannedText = recognizedStrings
-                formVC.capturedImage = image
-                self?.navigationController?.pushViewController(formVC, animated: true)
+                if self?.isCapturingFrontSide == true {
+                    self?.frontSideRecognizedStrings = recognizedStrings
+                    self?.promptToFlipCard()
+                } else {
+                    let formVC = FlashcardFormViewController()
+                    formVC.scannedText = recognizedStrings
+                    formVC.frontSideText = self?.frontSideRecognizedStrings ?? []
+                    self?.navigationController?.pushViewController(formVC, animated: true)
+                }
             }
         }
 
         try? requestHandler.perform([request])
     }
-
 }

@@ -11,50 +11,54 @@ struct Flashcard {
 
 class FlashcardFormViewController: UIViewController {
     var scannedText: [String] = []
-    var capturedImage: UIImage?
-    
+    var frontSideText: [String] = [] // Text recognized from the front side of the card
+
     var flashcard = Flashcard(mainPhrase: "", example: "", flashcardNumber: "", mainPhraseTranslation: "", exampleTranslation: "")
-    
+
     let scrollView = UIScrollView()
-    
+
+    // Define labels for displaying recognized text
+    let mainPhraseLabel = UILabel()
+    let exampleLabel = UILabel()
+    let flashcardNumberLabel = UILabel()
+    let mainPhraseTranslationLabel = UILabel()
+    let exampleTranslationLabel = UILabel()
+
+    // Define text fields for editing
+    let mainPhraseField = UITextField()
+    let exampleField = UITextField()
+    let flashcardNumberField = UITextField()
+    let mainPhraseTranslationField = UITextField()
+    let exampleTranslationField = UITextField()
+
+    var isEditingText = false // Track whether the form is in edit mode
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .darkGray
         setupKeyboardNotifications()
         setupForm()
     }
-    
+
     func setupForm() {
         scrollView.frame = view.bounds
         view.addSubview(scrollView)
 
-        let imageView = UIImageView(image: capturedImage)
-        imageView.contentMode = .scaleAspectFit
-        imageView.frame = CGRect(x: 0, y: 100, width: view.frame.width, height: 200)
-        scrollView.addSubview(imageView)
-        
-        let mainPhraseLabel = createLabel(text: "Main Phrase:")
-        let mainPhraseField = createTextField(placeholder: "Select Main Phrase")
-        mainPhraseField.tag = 0
-        
-        let exampleLabel = createLabel(text: "Example:")
-        let exampleField = createTextField(placeholder: "Select Example")
-        exampleField.tag = 1
-        
-        let flashcardNumberLabel = createLabel(text: "Flashcard Number:")
-        let flashcardNumberField = createTextField(placeholder: "Select Flashcard Number")
-        flashcardNumberField.tag = 2
-        
-        let mainPhraseTranslationLabel = createLabel(text: "Main Phrase Translation:")
-        let mainPhraseTranslationField = createTextField(placeholder: "Select Main Phrase Translation")
-        mainPhraseTranslationField.tag = 3
-        
-        let exampleTranslationLabel = createLabel(text: "Example Translation:")
-        let exampleTranslationField = createTextField(placeholder: "Select Example Translation")
-        exampleTranslationField.tag = 4
-        
-        let fields = [mainPhraseField, exampleField, flashcardNumberField, mainPhraseTranslationField, exampleTranslationField]
-        
+        setupLabel(mainPhraseLabel, text: "Main Phrase:", tag: 0)
+        setupLabel(exampleLabel, text: "Example:", tag: 1)
+        setupLabel(flashcardNumberLabel, text: "Flashcard Number:", tag: 2)
+        setupLabel(mainPhraseTranslationLabel, text: "Main Phrase Translation:", tag: 3)
+        setupLabel(exampleTranslationLabel, text: "Example Translation:", tag: 4)
+
+        // Initialize text fields with placeholders (for edit mode)
+        configureTextField(mainPhraseField, tag: 0)
+        configureTextField(exampleField, tag: 1)
+        configureTextField(flashcardNumberField, tag: 2)
+        configureTextField(mainPhraseTranslationField, tag: 3)
+        configureTextField(exampleTranslationField, tag: 4)
+
+
+        // Create the stack view
         let stackView = UIStackView(arrangedSubviews: [
                     mainPhraseLabel, mainPhraseField,
                     exampleLabel, exampleField,
@@ -62,66 +66,91 @@ class FlashcardFormViewController: UIViewController {
                     mainPhraseTranslationLabel, mainPhraseTranslationField,
                     exampleTranslationLabel, exampleTranslationField
                 ])
-                stackView.axis = .vertical
-                stackView.spacing = 10
-                stackView.frame = CGRect(x: 20, y: 320, width: view.frame.width - 40, height: 300)
-                scrollView.addSubview(stackView)
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        stackView.frame = CGRect(x: 20, y: 20, width: view.frame.width - 40, height: 400)
+        scrollView.addSubview(stackView)
 
-                scrollView.contentSize = CGSize(width: view.frame.width, height: stackView.frame.maxY + 50)
-            
-        
+        // Set scroll view content size to accommodate the form and save button
+        scrollView.contentSize = CGSize(width: view.frame.width, height: stackView.frame.maxY + 80)
+
+        // Add the "Edit" button to toggle between view and edit modes
+        let editButton = UIButton(type: .system)
+        editButton.setTitle("Edit", for: .normal)
+        editButton.addTarget(self, action: #selector(toggleEditMode), for: .touchUpInside)
+        editButton.frame = CGRect(x: 20, y: scrollView.contentSize.height + 10, width: view.frame.width - 40, height: 40)
+        scrollView.addSubview(editButton)
+
         let saveButton = UIButton(type: .system)
         saveButton.setTitle("Save", for: .normal)
         saveButton.backgroundColor = .systemBlue
         saveButton.setTitleColor(.white, for: .normal)
         saveButton.layer.cornerRadius = 10
         saveButton.addTarget(self, action: #selector(saveFlashcard), for: .touchUpInside)
-        saveButton.frame = CGRect(x: (view.frame.width - 120) / 2, y: stackView.frame.maxY + 20, width: 120, height: 50)
-        view.addSubview(saveButton)
-        
-        // Set up tap recognizer for selecting scanned text
-        for field in fields {
-            field.addTarget(self, action: #selector(selectScannedText(_:)), for: .editingDidBegin)
+        saveButton.frame = CGRect(x: 20, y: scrollView.contentSize.height - 60, width: view.frame.width - 40, height: 50)
+        scrollView.addSubview(saveButton)
+    }
+    
+    @objc func toggleEditMode() {
+        isEditingText.toggle()
+
+        // Toggle between labels and text fields
+        mainPhraseLabel.isHidden = isEditingText
+        exampleLabel.isHidden = isEditingText
+        flashcardNumberLabel.isHidden = isEditingText
+        mainPhraseTranslationLabel.isHidden = isEditingText
+        exampleTranslationLabel.isHidden = isEditingText
+
+        mainPhraseField.isHidden = !isEditingText
+        exampleField.isHidden = !isEditingText
+        flashcardNumberField.isHidden = !isEditingText
+        mainPhraseTranslationField.isHidden = !isEditingText
+        exampleTranslationField.isHidden = !isEditingText
+
+        if isEditingText {
+            // Populate text fields with current label values
+            mainPhraseField.text = mainPhraseLabel.text
+            exampleField.text = exampleLabel.text
+            flashcardNumberField.text = flashcardNumberLabel.text
+            mainPhraseTranslationField.text = mainPhraseTranslationLabel.text
+            exampleTranslationField.text = exampleTranslationLabel.text
+            
         }
     }
-    
-    func setupKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    
-    @objc func keyboardWillShow(notification: NSNotification) {
-       guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
-       let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
-       scrollView.contentInset = contentInsets
-       scrollView.scrollIndicatorInsets = contentInsets
+
+    func setupLabel(_ label: UILabel, text: String, tag: Int) {
+        label.text = text
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.numberOfLines = 0
+        label.isUserInteractionEnabled = true
+        label.tag = tag
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectScannedText(_:)))
+        label.addGestureRecognizer(tapGesture)
     }
 
-    @objc func keyboardWillHide(notification: NSNotification) {
-       scrollView.contentInset = .zero
-       scrollView.scrollIndicatorInsets = .zero
+    func configureTextField(_ textField: UITextField, tag: Int) {
+        textField.borderStyle = .roundedRect
+        textField.font = UIFont.systemFont(ofSize: 16)
+        textField.tag = tag
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(editScannedText(_:)))
+        textField.isHidden = true // Hide text fields initially
     }
 
-    deinit {
-       NotificationCenter.default.removeObserver(self)
-    }
-    
-    @objc func selectScannedText(_ textField: UITextField) {
+    @objc func selectScannedText(_ gesture: UITapGestureRecognizer) {
+        guard let label = gesture.view as? UILabel else { return }
         let alertController = UIAlertController(title: "Select Text", message: nil, preferredStyle: .actionSheet)
 
-        for text in scannedText {
+        let textOptions = frontSideText + scannedText
+
+        for text in textOptions {
             let action = UIAlertAction(title: text, style: .default) { [weak self] _ in
-                if textField.tag == 1 || textField.tag == 4 { // For example or example translation fields
-                    if let existingText = textField.text, !existingText.isEmpty {
-                        textField.text = existingText + "\n" + text
-                    } else {
-                        textField.text = text
-                    }
+                if let existingText = label.text, !existingText.isEmpty {
+                    label.text = existingText + "\n" + text
                 } else {
-                    textField.text = text
+                    label.text = text
                 }
-                self?.updateFlashcard(field: textField.tag, with: text)
+                
+                self?.updateFlashcard(field: label.tag, with: label.text ?? "")
             }
             alertController.addAction(action)
         }
@@ -130,22 +159,12 @@ class FlashcardFormViewController: UIViewController {
 
         present(alertController, animated: true, completion: nil)
     }
-    
-    func createLabel(text: String) -> UILabel {
-        let label = UILabel()
-        label.text = text
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        return label
+
+    @objc func editScannedText(_ gesture: UITapGestureRecognizer) {
+        guard let label = gesture.view as? UILabel else { return }
+        updateFlashcard(field: label.tag, with: label.text ?? "")
     }
-    
-    func createTextField(placeholder: String) -> UITextField {
-        let textField = UITextField()
-        textField.placeholder = placeholder
-        textField.borderStyle = .roundedRect
-        textField.font = UIFont.systemFont(ofSize: 16)
-        return textField
-    }
-    
+
     func updateFlashcard(field tag: Int, with text: String) {
         switch tag {
         case 0:
@@ -162,9 +181,38 @@ class FlashcardFormViewController: UIViewController {
             break
         }
     }
-    
+
     @objc func saveFlashcard() {
         // Here you can save or further process the flashcard
         print("Saved flashcard: \(flashcard)")
     }
+
+    func setupKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc func keyboardWillShow(notification: NSNotification) {
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        scrollView.contentInset = .zero
+        scrollView.scrollIndicatorInsets = .zero
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
+
+
+
+//struct FlashcardFormViewController_Previews: PreviewProvider {
+//    static var previews: some View {
+//        FlashcardFormViewController()
+//    }
+//}
