@@ -7,46 +7,79 @@ struct Flashcard {
     var flashcardNumber: String
     var mainPhraseTranslation: String
     var exampleTranslation: String
+    
+    init(mainPhrase: String, example: String, flashcardNumber: String, mainPhraseTranslation: String, exampleTranslation: String) {
+        self.mainPhrase = mainPhrase
+        self.example = example
+        self.flashcardNumber = flashcardNumber
+        self.mainPhraseTranslation = mainPhraseTranslation
+        self.exampleTranslation = exampleTranslation
+    }
+    
+    init() {
+        self.init(mainPhrase: "", example: "", flashcardNumber: "", mainPhraseTranslation: "", exampleTranslation: "")
+    }
+    
 }
 
-class FlashcardFormViewController: UIViewController {
+class FlashcardFormViewController: UIViewController, UITextFieldDelegate {
     var scannedText: [String] = []
     var frontSideText: [String] = [] // Text recognized from the front side of the card
-
+    
     var flashcard = Flashcard(mainPhrase: "", example: "", flashcardNumber: "", mainPhraseTranslation: "", exampleTranslation: "")
-
+    
     let scrollView = UIScrollView()
-
+    
     // Define labels for displaying recognized text
+    let mainPhraseSelection = UILabel()
+    let exampleSelection = UILabel()
+    let flashcardNumberSelection = UILabel()
+    let mainPhraseTranslationSelection = UILabel()
+    let exampleTranslationSelection = UILabel()
+    
+    // label
     let mainPhraseLabel = UILabel()
     let exampleLabel = UILabel()
     let flashcardNumberLabel = UILabel()
     let mainPhraseTranslationLabel = UILabel()
     let exampleTranslationLabel = UILabel()
     
-    // label text
-    let mainPhraseLabelName = UILabel()
-    let exampleLabelName = UILabel()
-    let flashcardNumberLabelName = UILabel()
-    let mainPhraseTranslationLabelName = UILabel()
-    let exampleTranslationLabelName = UILabel()
-
     // Define text fields for editing
-    let mainPhraseField = UITextField()
-    let exampleField = UITextField()
-    let flashcardNumberField = UITextField()
-    let mainPhraseTranslationField = UITextField()
-    let exampleTranslationField = UITextField()
-
+    let mainPhraseEditableField = UITextField()
+    let exampleEditableField = UITextField()
+    let flashcardNumberEditableField = UITextField()
+    let mainPhraseTranslationEditableField = UITextField()
+    let exampleTranslationEditableField = UITextField()
+    
     var isEditingText = false // Track whether the form is in edit mode
-
+    
+    var selectionText =  "Select text..."
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .darkGray
         setupKeyboardNotifications()
         setupForm()
+        
+        mainPhraseEditableField.delegate = self
+        exampleEditableField.delegate = self
+        flashcardNumberEditableField.delegate = self
+        mainPhraseTranslationEditableField.delegate = self
+        exampleTranslationEditableField.delegate = self
     }
-
+    
+    // This method is called when the user ends editing in the text field
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        // Update the label with the text from the text field
+//        label.text = textField.text
+    }
+    
+    // Optional: To hide the keyboard when the return key is pressed
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
     func setupForm() {
         scrollView.frame = view.bounds
         view.addSubview(scrollView)
@@ -57,54 +90,55 @@ class FlashcardFormViewController: UIViewController {
         let mainPhraseTranslationLabelText = "Main Phrase Translation:"
         let exampleTranslationLabelText = "Example Translation:"
         
-
-        // Create labels
-        setupEditTextLabel(mainPhraseLabelName, text: mainPhraseLabelText)
-        setupEditTextLabel(exampleLabelName, text: exampleLabelText)
-        setupEditTextLabel(flashcardNumberLabelName, text: flashcardNumberLabelText)
-        setupEditTextLabel(mainPhraseTranslationLabelName, text: mainPhraseTranslationLabelText)
-        setupEditTextLabel(exampleTranslationLabelName, text: exampleTranslationLabelText)
         
-        // Create labels with tap recognizers for multi-selection
-        setupLabel(mainPhraseLabel, text: mainPhraseLabelText , tag: 0)
-        setupLabel(exampleLabel, text: exampleLabelText, tag: 1)
-        setupLabel(flashcardNumberLabel, text: flashcardNumberLabelText, tag: 2)
-        setupLabel(mainPhraseTranslationLabel, text: mainPhraseTranslationLabelText, tag: 3)
-        setupLabel(exampleTranslationLabel, text: exampleTranslationLabelText, tag: 4)
-
-        // Initialize text fields with placeholders (for edit mode)
-        configureTextField(mainPhraseField, tag: 0)
-        configureTextField(exampleField, tag: 1)
-        configureTextField(flashcardNumberField, tag: 2)
-        configureTextField(mainPhraseTranslationField, tag: 3)
-        configureTextField(exampleTranslationField, tag: 4)
-               
-
+        // Create labels
+        setupLabel(mainPhraseLabel, text: mainPhraseLabelText)
+        setupLabel(exampleLabel, text: exampleLabelText)
+        setupLabel(flashcardNumberLabel, text: flashcardNumberLabelText)
+        setupLabel(mainPhraseTranslationLabel, text: mainPhraseTranslationLabelText)
+        setupLabel(exampleTranslationLabel, text: exampleTranslationLabelText)
+        
+        
+        // Create labels to select text
+        setupSelectionLabel(mainPhraseSelection, tag: 0)
+        setupSelectionLabel(exampleSelection, tag: 1)
+        setupSelectionLabel(flashcardNumberSelection, tag: 2)
+        setupSelectionLabel(mainPhraseTranslationSelection, tag: 3)
+        setupSelectionLabel(exampleTranslationSelection, tag: 4)
+        
+        // Initialize text fields for edit mode
+        configureTextField(mainPhraseEditableField, tag: 0)
+        configureTextField(exampleEditableField, tag: 1)
+        configureTextField(flashcardNumberEditableField, tag: 2)
+        configureTextField(mainPhraseTranslationEditableField, tag: 3)
+        configureTextField(exampleTranslationEditableField, tag: 4)
+        
+        
         // Create a stack view to hold the labels and text fields
         let stackView = UIStackView(arrangedSubviews: [
-                    mainPhraseLabel, setupEditingTextWithLabel(mainPhraseField, textLabel: mainPhraseLabelName),
-                    exampleLabel, setupEditingTextWithLabel(exampleField, textLabel: exampleLabelName ),
-                    flashcardNumberLabel, setupEditingTextWithLabel(flashcardNumberField, textLabel: flashcardNumberLabelName),
-                    mainPhraseTranslationLabel, setupEditingTextWithLabel(mainPhraseTranslationField, textLabel: mainPhraseTranslationLabelName),
-                    exampleTranslationLabel, setupEditingTextWithLabel(exampleTranslationField, textLabel: exampleTranslationLabelName)
-                ])
+            setupSelectingTextWithLabel(mainPhraseSelection, textLabel: mainPhraseLabel), setupEditingTextWithLabel(mainPhraseEditableField, textLabel: mainPhraseLabel),
+            setupSelectingTextWithLabel(exampleSelection, textLabel: exampleLabel ), setupEditingTextWithLabel(exampleEditableField, textLabel: exampleLabel ),
+            setupSelectingTextWithLabel(flashcardNumberSelection, textLabel: flashcardNumberLabel), setupEditingTextWithLabel(flashcardNumberEditableField, textLabel: flashcardNumberLabel),
+            setupSelectingTextWithLabel(mainPhraseTranslationSelection, textLabel: mainPhraseTranslationLabel), setupEditingTextWithLabel(mainPhraseTranslationEditableField, textLabel: mainPhraseTranslationLabel),
+            setupSelectingTextWithLabel(exampleTranslationSelection, textLabel: exampleTranslationLabel), setupEditingTextWithLabel(exampleTranslationEditableField, textLabel: exampleTranslationLabel)
+        ])
         stackView.axis = .vertical
         stackView.spacing = 10
         stackView.alignment = .fill
         stackView.distribution = .fillEqually // Ensure equal distribution of space
         stackView.frame = CGRect(x: 20, y: 20, width: view.frame.width - 40, height: 400)
         scrollView.addSubview(stackView)
-
+        
         // Set scroll view content size to accommodate the form and save button
         scrollView.contentSize = CGSize(width: view.frame.width, height: stackView.frame.maxY + 80)
-
+        
         // Add the "Edit" button to toggle between view and edit modes
         let editButton = UIButton(type: .system)
         editButton.setTitle("Edit", for: .normal)
         editButton.addTarget(self, action: #selector(toggleEditMode), for: .touchUpInside)
         editButton.frame = CGRect(x: 20, y: scrollView.contentSize.height + 10, width: view.frame.width - 40, height: 40)
         scrollView.addSubview(editButton)
-
+        
         // Add the save button
         let saveButton = UIButton(type: .system)
         saveButton.setTitle("Save", for: .normal)
@@ -126,9 +160,26 @@ class FlashcardFormViewController: UIViewController {
         scrollView.addSubview(stackView)
         return stackView
     }
-
-    func setupLabel(_ label: UILabel, text: String, tag: Int) {
+    
+    func setupSelectingTextWithLabel(_ textField: UILabel, textLabel: UILabel) -> UIView {
+        let stackView = UIStackView(arrangedSubviews: [textField, textLabel])
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        stackView.alignment = .fill
+        stackView.frame = CGRect(x: 20, y: 20, width: view.frame.width - 40, height: 400)
+        
+        scrollView.addSubview(stackView)
+        return stackView
+    }
+    
+    func setupLabel(_ label: UILabel, text: String) {
         label.text = text
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.numberOfLines = 0
+    }
+    
+    func setupSelectionLabel(_ label: UILabel, tag: Int) {
+        label.text = selectionText
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.numberOfLines = 0
         label.isUserInteractionEnabled = true
@@ -136,14 +187,14 @@ class FlashcardFormViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectScannedText(_:)))
         label.addGestureRecognizer(tapGesture)
     }
-
+    
     func setupEditTextLabel(_ label: UILabel, text: String) {
         let label = UILabel()
         label.text = text
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.isHidden = true
     }
-
+    
     func configureTextField(_ textField: UITextField, tag: Int) {
         textField.borderStyle = .roundedRect
         textField.font = UIFont.systemFont(ofSize: 16)
@@ -151,57 +202,57 @@ class FlashcardFormViewController: UIViewController {
         textField.tag = tag
         textField.isHidden = true // Hide text fields initially
         textField.backgroundColor = .white
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(editScannedText(_:)))
+        textField.addGestureRecognizer(tapGesture)
     }
-
-//    func createStackedView(for label: UILabel, and textField: UITextField) -> UIStackView {
-//        let stackView = UIStackView(arrangedSubviews: [label, textField])
-//        stackView.axis = .vertical
-//        stackView.alignment = .fill
-//        stackView.distribution = .fillEqually
-//        return stackView
-//    }
-
+    
     @objc func toggleEditMode() {
         isEditingText.toggle()
-
-        // Toggle between labels and text fields
-        mainPhraseLabel.isHidden = isEditingText
-        exampleLabel.isHidden = isEditingText
-        flashcardNumberLabel.isHidden = isEditingText
-        mainPhraseTranslationLabel.isHidden = isEditingText
-        exampleTranslationLabel.isHidden = isEditingText
-
-        mainPhraseField.isHidden = !isEditingText
-        exampleField.isHidden = !isEditingText
-        flashcardNumberField.isHidden = !isEditingText
-        mainPhraseTranslationField.isHidden = !isEditingText
-        exampleTranslationField.isHidden = !isEditingText
         
-        mainPhraseLabelName.isHidden = !isEditingText
-        exampleLabelName.isHidden = !isEditingText
-        flashcardNumberLabelName.isHidden = !isEditingText
-        mainPhraseTranslationLabelName.isHidden = !isEditingText
-        exampleTranslationLabelName.isHidden = !isEditingText
-
+        // Toggle between labels and text fields
+        mainPhraseSelection.isHidden = isEditingText
+        exampleSelection.isHidden = isEditingText
+        flashcardNumberSelection.isHidden = isEditingText
+        mainPhraseTranslationSelection.isHidden = isEditingText
+        exampleTranslationSelection.isHidden = isEditingText
+        
+        mainPhraseEditableField.isHidden = !isEditingText
+        exampleEditableField.isHidden = !isEditingText
+        flashcardNumberEditableField.isHidden = !isEditingText
+        mainPhraseTranslationEditableField.isHidden = !isEditingText
+        exampleTranslationEditableField.isHidden = !isEditingText
+        
         if isEditingText {
             // Populate text fields with current label values
-            print("### " + flashcard.mainPhrase)
-            mainPhraseField.text = flashcard.mainPhrase
-            exampleField.text = flashcard.example
-            flashcardNumberField.text = flashcard.flashcardNumber
-            mainPhraseTranslationField.text = flashcard.mainPhraseTranslation
-            exampleTranslationField.text = flashcard.exampleTranslation
+            mainPhraseEditableField.text = flashcard.mainPhrase
+            exampleEditableField.text = flashcard.example
+            flashcardNumberEditableField.text = flashcard.flashcardNumber
+            mainPhraseTranslationEditableField.text = flashcard.mainPhraseTranslation
+            exampleTranslationEditableField.text = flashcard.exampleTranslation
+        }
+        
+        if !isEditingText {
+            // Populate text fields with current label values
+            mainPhraseSelection.text = flashcard.mainPhrase
+            exampleSelection.text = flashcard.example
+            flashcardNumberSelection.text = flashcard.flashcardNumber
+            mainPhraseTranslationSelection.text = flashcard.mainPhraseTranslation
+            exampleTranslationSelection.text = flashcard.exampleTranslation
         }
     }
-
+    
     @objc func selectScannedText(_ gesture: UITapGestureRecognizer) {
         guard let label = gesture.view as? UILabel else { return }
         let alertController = UIAlertController(title: "Select Text", message: nil, preferredStyle: .actionSheet)
-
+        
         let textOptions = frontSideText + scannedText
-
+        
         for text in textOptions {
             let action = UIAlertAction(title: text, style: .default) { [weak self] _ in
+                let existingTxt = label.text
+                if existingTxt == self?.selectionText {
+                    label.text = ""
+                }
                 if let existingText = label.text, !existingText.isEmpty {
                     label.text = existingText + "\n" + text
                 } else {
@@ -211,12 +262,17 @@ class FlashcardFormViewController: UIViewController {
             }
             alertController.addAction(action)
         }
-
+        
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-
+        
         present(alertController, animated: true, completion: nil)
     }
-
+    
+    @objc func editScannedText(_ gesture: UITapGestureRecognizer) {
+        guard let textField = gesture.view as? UITextField else { return }
+        self.updateFlashcard(field: textField.tag, with: textField.text ?? "")
+    }
+    
     func updateFlashcard(field tag: Int, with text: String) {
         switch tag {
         case 0:
@@ -233,43 +289,43 @@ class FlashcardFormViewController: UIViewController {
             break
         }
     }
-
+    
     @objc func saveFlashcard() {
         // Here you can save or further process the flashcard
         print("Saved flashcard: \(flashcard)")
         
         let csvString = flashcard.mainPhrase + "," + flashcard.mainPhraseTranslation
-
+        
         do {
             let path = try FileManager.default.url(for: .documentDirectory,
                                                    in: .allDomainsMask,
                                                    appropriateFor: nil,
                                                    create: false)
-
+            
             let fileURL = path.appendingPathComponent("TrailTime.csv")
             try csvString.write(to: fileURL, atomically: true , encoding: .utf8)
         } catch {
             print("error creating file")
         }
     }
-
+    
     func setupKeyboardNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-
+    
     @objc func keyboardWillShow(notification: NSNotification) {
         guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
         let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
         scrollView.contentInset = contentInsets
         scrollView.scrollIndicatorInsets = contentInsets
     }
-
+    
     @objc func keyboardWillHide(notification: NSNotification) {
         scrollView.contentInset = .zero
         scrollView.scrollIndicatorInsets = .zero
     }
-
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }

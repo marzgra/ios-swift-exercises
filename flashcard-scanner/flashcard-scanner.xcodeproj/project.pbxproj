@@ -7,20 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3746A4532C6A310100885133 /* FlashcardScannerViewController.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3746A4522C6A310100885133 /* FlashcardScannerViewController.swift.swift */; };
 		3746A4552C6AA61F00885133 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3746A4542C6AA61F00885133 /* CameraViewController.swift */; };
-		3746A4572C6AA64B00885133 /* FlashcardFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3746A4562C6AA64B00885133 /* FlashcardFormViewController.swift */; };
 		3746A4592C6AA69500885133 /* FlashcardScannerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3746A4582C6AA69500885133 /* FlashcardScannerApp.swift */; };
+		3746A45B2C713F9900885133 /* FormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3746A45A2C713F9900885133 /* FormView.swift */; };
 		37C0AD222C6925F900C3173A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37C0AD212C6925F900C3173A /* Assets.xcassets */; };
 		37C0AD252C6925F900C3173A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37C0AD242C6925F900C3173A /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3746A4512C69385500885133 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		3746A4522C6A310100885133 /* FlashcardScannerViewController.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardScannerViewController.swift.swift; sourceTree = "<group>"; };
 		3746A4542C6AA61F00885133 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
-		3746A4562C6AA64B00885133 /* FlashcardFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardFormViewController.swift; sourceTree = "<group>"; };
 		3746A4582C6AA69500885133 /* FlashcardScannerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardScannerApp.swift; sourceTree = "<group>"; };
+		3746A45A2C713F9900885133 /* FormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormView.swift; sourceTree = "<group>"; };
 		37C0AD1A2C6925F600C3173A /* flashcard-scanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "flashcard-scanner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		37C0AD212C6925F900C3173A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		37C0AD242C6925F900C3173A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -58,11 +56,10 @@
 			children = (
 				3746A4542C6AA61F00885133 /* CameraViewController.swift */,
 				3746A4582C6AA69500885133 /* FlashcardScannerApp.swift */,
-				3746A4562C6AA64B00885133 /* FlashcardFormViewController.swift */,
-				3746A4522C6A310100885133 /* FlashcardScannerViewController.swift.swift */,
 				3746A4512C69385500885133 /* Info.plist */,
 				37C0AD212C6925F900C3173A /* Assets.xcassets */,
 				37C0AD232C6925F900C3173A /* Preview Content */,
+				3746A45A2C713F9900885133 /* FormView.swift */,
 			);
 			path = "flashcard-scanner";
 			sourceTree = "<group>";
@@ -146,8 +143,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3746A4532C6A310100885133 /* FlashcardScannerViewController.swift.swift in Sources */,
-				3746A4572C6AA64B00885133 /* FlashcardFormViewController.swift in Sources */,
+				3746A45B2C713F9900885133 /* FormView.swift in Sources */,
 				3746A4552C6AA61F00885133 /* CameraViewController.swift in Sources */,
 				3746A4592C6AA69500885133 /* FlashcardScannerApp.swift in Sources */,
 			);
