@@ -75,7 +75,14 @@ struct BasicTextRow: View {
                         .background(Color.blue)
                         .cornerRadius(10)
                         .onTapGesture {
-                            print("Saved flashcard: \($card)")
+                            saveFlashcardToFile(flashcard: card)
+                            print("Saved flashcard: \(card)")
+                            
+                            // Clear the current flashcard for new input
+                            card = Flashcard()
+                            scannedText = []
+                            frontSideText = []
+                            
                         }
 
                     
@@ -93,51 +100,32 @@ struct EditView: View {
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 10) {
-            EditLabelAndTextFied(label: "Phrase", exisitngText: $card.mainPhrase)
-            EditLabelAndTextFied(label: "Translation", exisitngText: $card.mainPhraseTranslation)
-            EditLabelAndTextFied(label: "Example", exisitngText: $card.example)
-            EditLabelAndTextFied(label: "Example translation", exisitngText: $card.exampleTranslation)
-            EditLabelAndTextFied(label: "Card No.", exisitngText: $card.flashcardNumber)
+            EditLabelAndTextFied(label: "Phrase", tag: 0, textValue: $card.mainPhrase, card: $card)
+            EditLabelAndTextFied(label: "Translation", tag: 1, textValue: $card.mainPhraseTranslation, card: $card)
+            EditLabelAndTextFied(label: "Example", tag: 2, textValue: $card.example, card: $card)
+            EditLabelAndTextFied(label: "Example translation", tag: 3, textValue: $card.exampleTranslation, card: $card)
+            EditLabelAndTextFied(label: "Card No.", tag: 4, textValue: $card.flashcardNumber, card: $card)
+        }
+        .onTapGesture {
+            UIApplication.shared.dismissKeyboard()
         }
         .padding()
         .navigationTitle("Edit Data")
     }
 }
 
-struct EditLabelAndTextFied: View {
-    var label: String
-    @Binding var exisitngText: String
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text(label.uppercased())
-                .font(.system(.headline, design: .rounded))
-                .foregroundColor(Color(.darkGray))
-            
-            TextField("Edit data...", text: $exisitngText)
-                .font(.system(.body, design: .rounded))
-                .textFieldStyle(PlainTextFieldStyle())
-                .padding(10)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 5)
-                        .stroke(Color(.systemGray5), lineWidth: 1)
-                )
-                .padding(.vertical, 10)
-        }
+extension UIApplication {
+    func dismissKeyboard() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 
-struct SelectionView: View {
-    
-    @State private var showActionSheet = false
-    @State private var selectedText: String = ""
-    @State private var cardText: String = ""
-    
-    @Binding var frontSideText: [String]
-    @Binding var scannedText: [String]
-    @Binding var card: Flashcard
-    var fieldTag: Int
+struct EditLabelAndTextFied: View {
     var label: String
+    var tag: Int
+    @Binding var textValue: String
+    @Binding var card: Flashcard
+    @FocusState private var isFocused: Bool
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -145,7 +133,7 @@ struct SelectionView: View {
                 .font(.system(.headline, design: .rounded))
                 .foregroundColor(Color(.darkGray))
             
-            TextField("Tap to select text...", text: $cardText)
+            TextField("Edit data...", text: $textValue)
                 .font(.system(.body, design: .rounded))
                 .textFieldStyle(PlainTextFieldStyle())
                 .padding(10)
@@ -153,33 +141,14 @@ struct SelectionView: View {
                     RoundedRectangle(cornerRadius: 5)
                         .stroke(Color(.systemGray5), lineWidth: 1)
                 )
-                .padding(.vertical, 10)
-                .onTapGesture {
-                    showActionSheet = true
-                }
-        }
-        .actionSheet(isPresented: $showActionSheet) {
-            actionSheet()
-        }
-        
-    }
-    
-    func actionSheet() -> ActionSheet {
-        let textOptions = frontSideText + scannedText
-        
-        return ActionSheet(
-            title: Text("Select Text"),
-            buttons: textOptions.map { text in
-                    .default(Text(text)) {
-                        if !cardText.isEmpty {
-                            cardText += "\n" + text
-                        } else {
-                            cardText = text
-                        }
-                        updateFlashcard(field: fieldTag, with: cardText)
+                .focused($isFocused)
+                .onChange(of: isFocused) { wasFocused, isFocused in
+                    if !isFocused {
+                        updateFlashcard(field: tag, with: textValue)
                     }
-            } + [.cancel()]
-        )
+                }
+                .padding(.vertical, 10)
+        }
     }
     
     func updateFlashcard(field tag: Int, with text: String) {
@@ -199,6 +168,145 @@ struct SelectionView: View {
         }
     }
 }
+
+struct SelectionView: View {
+    
+    @State private var showActionSheet = false
+    @Binding var frontSideText: [String]
+    @Binding var scannedText: [String]
+    @Binding var card: Flashcard
+    var fieldTag: Int
+    var label: String
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(label.uppercased())
+                .font(.system(.headline, design: .rounded))
+                .foregroundColor(Color(.darkGray))
+            
+            TextField("Tap to select text...", text: Binding(
+                get: { self.textForFieldTag() },
+                set: { newValue in self.updateFlashcard(field: self.fieldTag, with: newValue) }
+            ))
+            .font(.system(.body, design: .rounded))
+            .textFieldStyle(PlainTextFieldStyle())
+            .padding(10)
+            .overlay(
+                RoundedRectangle(cornerRadius: 5)
+                    .stroke(Color(.systemGray5), lineWidth: 1)
+            )
+            .padding(.vertical, 10)
+            .onTapGesture {
+                showActionSheet = true
+            }
+        }
+        .actionSheet(isPresented: $showActionSheet) {
+            actionSheet()
+        }
+    }
+    
+    func actionSheet() -> ActionSheet {
+        let textOptions = frontSideText + scannedText
+        
+        return ActionSheet(
+            title: Text("Select Text"),
+            buttons: textOptions.map { text in
+                    .default(Text(text)) {
+                        let updatedText: String
+                        if !textForFieldTag().isEmpty {
+                            updatedText = textForFieldTag() + " " + text
+                        } else {
+                            updatedText = text
+                        }
+                        updateFlashcard(field: fieldTag, with: updatedText)
+                    }
+            } + [.cancel()]
+        )
+    }
+    
+    func textForFieldTag() -> String {
+        switch fieldTag {
+        case 0:
+            return card.mainPhrase
+        case 1:
+            return card.mainPhraseTranslation
+        case 2:
+            return card.example
+        case 3:
+            return card.exampleTranslation
+        case 4:
+            return card.flashcardNumber
+        default:
+            return ""
+        }
+    }
+
+    func updateFlashcard(field tag: Int, with text: String) {
+        switch tag {
+        case 0:
+            card.mainPhrase = text
+        case 1:
+            card.mainPhraseTranslation = text
+        case 2:
+            card.example = text
+        case 3:
+            card.exampleTranslation = text
+        case 4:
+            card.flashcardNumber = text
+        default:
+            break
+        }
+    }
+}
+
+extension Flashcard {
+    func toString() -> String {
+        return "\(mainPhrase) | \(example) (\(flashcardNumber)),\(mainPhraseTranslation) | \(exampleTranslation)"
+    }
+}
+
+func saveFlashcardToFile(flashcard: Flashcard, filename: String = "flashcards.csv") {
+    let fileManager = FileManager.default
+    
+    // Get the path to the "On My iPhone" or "On My iPad" directory
+    guard let sharedDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Flashcards", isDirectory: true) else {
+        print("Failed to get shared directory.")
+        return
+    }
+    
+    // Ensure the directory exists
+    do {
+        try fileManager.createDirectory(at: sharedDirectory, withIntermediateDirectories: true, attributes: nil)
+    } catch {
+        print("Failed to create directory: \(error.localizedDescription)")
+        return
+    }
+    
+    // Construct the full file path
+    let fileURL = sharedDirectory.appendingPathComponent(filename)
+    
+    let flashcardString = flashcard.toString() + "\n\n" // Add some spacing between flashcards
+    
+    do {
+        if fileManager.fileExists(atPath: fileURL.path) {
+            // Append to the existing file
+            if let fileHandle = try? FileHandle(forWritingTo: fileURL) {
+                fileHandle.seekToEndOfFile()
+                if let data = flashcardString.data(using: .utf8) {
+                    fileHandle.write(data)
+                    fileHandle.closeFile()
+                }
+            }
+        } else {
+            // Create the file and write the first flashcard
+            try flashcardString.write(to: fileURL, atomically: true, encoding: .utf8)
+        }
+        print("Flashcard saved to \(fileURL.path)")
+    } catch {
+        print("Failed to save flashcard: \(error.localizedDescription)")
+    }
+}
+
 
 //struct FormView_Previews: PreviewProvider {
 //    static var previews: some View {
